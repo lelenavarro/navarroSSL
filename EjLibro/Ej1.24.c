@@ -11,15 +11,16 @@ enum
     QUOTE2
 };
 
+void fin_del_programa_por_mal_cierre(char stack[1024], int *top);
+
 int main(void)
 {
     int ch;
     int state = CODE;
     char stack[MAX_STACK];
-    size_t top = 0; 	/* puntero a la cima de la pila */
-    size_t line = 1;
+    int top = 0; 	/* puntero a la cima de la pila */
     int error = 0;  	/* para ok-message */
-
+    size_t line = 1;
     while ((ch = getchar()) != EOF)
     {
         if (ch == '\n')
@@ -79,6 +80,7 @@ int main(void)
                         (ch == '}' && open != '{'))
                     {
                         printf("Linea %lu: Cierre '%c' no matchea con la apertura '%c'.\n", (unsigned long)line, ch, open);
+			fin_del_programa_por_mal_cierre(stack, &top);    
                         error = 1;
                     }
                 }
@@ -153,3 +155,9 @@ int main(void)
 
     return 0;
 }
+
+void fin_del_programa_por_mal_cierre(char stack[], int *top){
+	system("cls");
+	printf("El programa vuelve a iniciar. Se limpia la pila\n");
+	*top = 0;
+};

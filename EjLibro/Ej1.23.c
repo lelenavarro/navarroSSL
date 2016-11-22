@@ -15,7 +15,6 @@ int main()
     int quotes = 0;
     int comment = 0;
     int current_quote;
-    putchar('\n');
     c = getchar();
     while (c != EOF)
     {

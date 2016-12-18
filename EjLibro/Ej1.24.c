@@ -1,24 +1,33 @@
-/* Leandro Navarro Grupo1 1.24 con pila */
+//-----------------------------------------------------------*
+//			UTN FRBA - SSL
+//-----------------------------------------------------------*
+//		TP 2 - Ejercicio 1.24 K&R
+//-----------------------------------------------------------*
+//Curso: K2051 - Lunes noche
+//Grupo 1
+//-----------------------------------------------------------*
 #include <stdio.h>
 #include <stdlib.h>
-#define MAX_STACK 1024
+#include "Stack.h"
 
 enum
 {
     CODE,
-    COMMENT,
+    POSIBLE_COMMENT_IN,
+    POSIBLE_COMMENT_OUT,
+    COMMENT_SIMPLE,
+    COMMENT_MULTI,
     QUOTE1,
     QUOTE2
 };
 
-void fin_del_programa_por_mal_cierre(char stack[1024], int *top);
+void fin_del_programa_por_mal_cierre(stack*);
 
 int main(void)
 {
     int ch;
     int state = CODE;
-    char stack[MAX_STACK];
-    int top = 0; 	/* puntero a la cima de la pila */
+    stack stack_info;
     int error = 0;  	/* para ok-message */
     size_t line = 1;
     while ((ch = getchar()) != EOF)
@@ -41,67 +50,78 @@ int main(void)
             }
             else if (ch == '/')
             {
-                int aux = getchar();
-
-                if (aux == '*')
-                {
-                    state = COMMENT;
-                }
-                else
-                {
-                    ungetc(aux, stdin);
-                }
+                    //Posible comienzo de comentario
+                    state = POSIBLE_COMMENT_IN;
             }
             else if (ch == '(' || ch == '[' || ch == '{')
             {
-                if (top < MAX_STACK)
-                {
-                    stack[top++] = ch;
-                }
-                else
-                {
-                    printf("Pila chica!\n");
-                    return EXIT_FAILURE;
-                }
+                push(&stack_info, ch);
             }
             else if (ch == ')' || ch == ']' || ch == '}')
             {
-                if (top == 0) /* Hay un cierre pero no hay nada abierto */
+                if((&stack_info)->top == 0) /* Hay un cierre pero no hay nada abierto */
                 {
                     printf("Linea %lu: Cierre '%c' encontrado sin contraparte.\n", (unsigned long)line, ch);
                     error = 1;
                 }
                 else
                 {
-                    char open = stack[--top];
+                    char open = pop(&stack_info);
 
                     if ((ch == ')' && open != '(') ||
                         (ch == ']' && open != '[') ||
                         (ch == '}' && open != '{'))
                     {
                         printf("Linea %lu: Cierre '%c' no matchea con la apertura '%c'.\n", (unsigned long)line, ch, open);
-			fin_del_programa_por_mal_cierre(stack, &top);    
+			fin_del_programa_por_mal_cierre(&stack_info);    
                         error = 1;
                     }
                 }
             }
             break;
 			
-        case COMMENT:
-            if (ch == '*')
-            {
-                int aux = getchar();
-
-                if (aux == '/')
+		case POSIBLE_COMMENT_IN:
+               
+                  if ( ch == '*')
+                    {
+                      //Comienzo de comentario multilinea
+                      state = COMMENT_MULTI;
+                     }
+                   else if(ch == '/')
+                     {
+                      //Comienzo de comentario de linea simple
+                      state = COMMENT_SIMPLE;
+                      }
+                      else
+                      {
+                      state = CODE;
+                    }
+                break;
+                
+            case COMMENT_SIMPLE:
+                
+                if (ch == '\n')
                 {
                     state = CODE;
                 }
-                else
+                break;
+                
+            case COMMENT_MULTI:
+                
+                if (ch == '*')
                 {
-                    ungetc(aux, stdin);
+                    //Posible final de comentario
+                    state = POSIBLE_COMMENT_OUT;
                 }
-            }
-            break;
+                break;
+                
+            case POSIBLE_COMMENT_OUT:
+                
+                if (ch == '/')
+                {
+                    state = CODE;
+                }
+                break;
 			
         case QUOTE1:
             if (ch == '\\')
@@ -139,25 +159,26 @@ int main(void)
     {
         printf("El codigo termina en una cita\n");
     }
-    else if (top == 0 && error == 0)
+    else if (((&stack_info)->top == 0) && error == 0)
     {
         printf("Perfecto!\n");
     }
 
-    if (top > 0) /* quedo algo en la pila */
+    if ((&stack_info)->top > 0) /* quedo algo en la pila */
     {
         size_t i;
-        for (i = 0; i < top; i++)
+        for (i = 0; i < ((&stack_info)->top); i++)
         {
-            printf("Se abrió un '%c' y no se cerró.\n", stack[i]);
+            char muestro_caracter = pop(&stack_info);
+            printf("Se abrió un '%c' y no se cerró.\n", muestro_caracter);
         }
     }
 
     return 0;
 }
 
-void fin_del_programa_por_mal_cierre(char stack[], int *top){
+void fin_del_programa_por_mal_cierre(stack *stack){
 	system("cls");
 	printf("El programa vuelve a iniciar. Se limpia la pila\n");
-	*top = 0;
+	stack->top = 0;
 };

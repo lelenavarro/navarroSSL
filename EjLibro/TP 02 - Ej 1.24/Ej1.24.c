@@ -13,8 +13,8 @@
 enum
 {
     CODE,
-    POSIBLE_COMMENT_IN,
-    POSIBLE_COMMENT_OUT,
+    POSSIBLE_COMMENT_IN,
+    POSSIBLE_COMMENT_OUT,
     COMMENT_SIMPLE,
     COMMENT_MULTI,
     QUOTE1,
@@ -51,7 +51,7 @@ int main(void)
             else if (ch == '/')
             {
                     //Posible comienzo de comentario
-                    state = POSIBLE_COMMENT_IN;
+                    state = POSSIBLE_COMMENT_IN;
             }
             else if (ch == '(' || ch == '[' || ch == '{')
             {
@@ -80,7 +80,7 @@ int main(void)
             }
             break;
 			
-		case POSIBLE_COMMENT_IN:
+		case POSSIBLE_COMMENT_IN:
                
                   if ( ch == '*')
                     {
@@ -111,11 +111,11 @@ int main(void)
                 if (ch == '*')
                 {
                     //Posible final de comentario
-                    state = POSIBLE_COMMENT_OUT;
+                    state = POSSIBLE_COMMENT_OUT;
                 }
                 break;
                 
-            case POSIBLE_COMMENT_OUT:
+            case POSSIBLE_COMMENT_OUT:
                 
                 if (ch == '/')
                 {

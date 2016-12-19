@@ -6,10 +6,12 @@
 //Curso: K2051 - Lunes noche
 //Grupo 1
 //-----------------------------------------------------------*
+//DIRECTIVAS AL PREPROCESADOR
 #include <stdio.h>
 #include <stdlib.h>
 #include "Stack.h"
 
+//ESTADOS DEL AUTOMATA
 enum
 {
     CODE,
@@ -21,6 +23,7 @@ enum
     QUOTE2
 };
 
+//DECLARACION DE FUNCIONES
 void fin_del_programa_por_mal_cierre(stack*);
 
 int main(void)
@@ -80,7 +83,7 @@ int main(void)
             }
             break;
 			
-		case POSSIBLE_COMMENT_IN:
+	    case POSSIBLE_COMMENT_IN:
                
                   if ( ch == '*')
                     {
@@ -96,7 +99,7 @@ int main(void)
                       {
                       state = CODE;
                     }
-                break;
+            break;
                 
             case COMMENT_SIMPLE:
                 
@@ -104,7 +107,7 @@ int main(void)
                 {
                     state = CODE;
                 }
-                break;
+            break;
                 
             case COMMENT_MULTI:
                 
@@ -113,7 +116,7 @@ int main(void)
                     //Posible final de comentario
                     state = POSSIBLE_COMMENT_OUT;
                 }
-                break;
+            break;
                 
             case POSSIBLE_COMMENT_OUT:
                 
@@ -121,7 +124,7 @@ int main(void)
                 {
                     state = CODE;
                 }
-                break;
+            break;
 			
         case QUOTE1:
             if (ch == '\\')
@@ -132,7 +135,7 @@ int main(void)
             {
                 state = CODE;
             }
-            break;
+        break;
 			
         case QUOTE2:
             if (ch == '\\')
@@ -143,7 +146,7 @@ int main(void)
             {
                 state = CODE;
             }
-            break;
+        break;
         }
     }
 
@@ -177,6 +180,7 @@ int main(void)
     return 0;
 }
 
+//DEFINICION DE FUNCIONES INVOCADAS
 void fin_del_programa_por_mal_cierre(stack *stack){
 	system("cls");
 	printf("El programa vuelve a iniciar. Se limpia la pila\n");

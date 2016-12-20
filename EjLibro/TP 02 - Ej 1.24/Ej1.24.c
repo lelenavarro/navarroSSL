@@ -150,7 +150,7 @@ int main(void)
         }
     }
 
-    if (state == COMMENT)
+    if (state == COMMENT_SIMPLE || state == COMMENT_MULTI)
     {
         printf("El codigo termina dentro de un comentario\n");
     }

@@ -80,20 +80,21 @@ int read_char_in_end_of_char_state(char char_from_input_array, enum states state
     putchar(char_from_input_array);
     return state;
 }
-
 //-------------------------------------------------------------------
 int read_char_in_pc_state(char char_from_input_array, enum states state){
     
-    if(char_from_input_array!='/' && char_from_input_array!='*')
-    {   return state = NO_COMMENT;
+    switch (char_from_input_array) {
+        case '/':
+            return state = LINE_COMMENT;
+            break;
+        case '*':
+            return state = COMMENT;
+            break;
+        default:
+            return state = NO_COMMENT;
+            break;
     }
-    if(char_from_input_array=='/')
-    {
-        return state = LINE_COMMENT;
-    }
-    return state = COMMENT;
     //Si no es un No Comentario, ni es un Comentario de Linea, entonces es un Comentario
-    
 }	//La funcion analiza si el caracter que se recibe hace que se pase a un comentario de varias lineas, de una linea, o que no sea un comentario
 //-------------------------------------------------------------------
 int read_char_in_lc_state(char char_from_input_array, enum states state){

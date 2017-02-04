@@ -15,8 +15,8 @@
 #define MAX_STACK 1024
 
 char pop(void);
-int push( char);
-void fin_del_programa_por_mal_cierre();
+int push(char);
+void fin_del_programa_por_mal_cierre(void);
 int isEmpty(void);
 int get_top(void);
 

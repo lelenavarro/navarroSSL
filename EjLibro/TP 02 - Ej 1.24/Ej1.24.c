@@ -173,6 +173,5 @@ int main(void)
             printf("Se abrió un '%c' y no se cerró.\n", muestro_caracter);
         }
     }
-
     return 0;
 }

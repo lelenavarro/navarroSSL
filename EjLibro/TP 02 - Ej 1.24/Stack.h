@@ -14,12 +14,10 @@
 
 #define MAX_STACK 1024
 
-typedef struct {
-    int top;
-    char character[MAX_STACK];
-} stack;
-
-char pop( stack*);
-int push( stack*, char);
+char pop(void);
+int push( char);
+void fin_del_programa_por_mal_cierre();
+int isEmpty(void);
+int get_top(void);
 
 #endif /* Stack_h */

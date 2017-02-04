@@ -1,0 +1,30 @@
+digraph G { 
+NO_COMMENT -> POSSIBLE_COMMENT [label="/"];
+NO_COMMENT -> STRING [label="\""];
+NO_COMMENT -> CHAR [label="\'"];
+NO_COMMENT -> ESCAPE_NO_COMMENT [label="\\"];
+NO_COMMENT -> NO_COMMENT [label="Otro caracter"];
+ESCAPE_NO_COMMENT -> NO_COMMENT;
+CHAR -> EMPTY_CHAR_ERROR [label="\'"];
+CHAR -> ESCAPE_CHAR [label="\\"];
+CHAR -> END_OF_CHAR [label="Otro caracter"];
+ESCAPE_CHAR -> END_OF_CHAR ;
+END_OF_CHAR -> NO_COMMENT  [label="\'"];
+END_OF_CHAR -> MORE_THAN_ONE_CHAR_ERROR [label="Otro caracter"];
+EMPTY_CHAR_ERROR -> END_OF_STATE_MACHINE;
+END_OF_STATE_MACHINE  [shape=box,style=filled]; 
+MORE_THAN_ONE_CHAR_ERROR-> END_OF_STATE_MACHINE;
+STRING-> NO_COMMENT [label="\""];
+STRING-> ESCAPE_STRING [label="\\"];
+STRING ->STRING [label="Otro caracter"];
+ESCAPE_STRING -> STRING;
+POSSIBLE_COMMENT ->LINE_COMMENT [label="/"];
+POSSIBLE_COMMENT ->COMMENT [label="*"];
+POSSIBLE_COMMENT ->NO_COMMENT [label="Otro caracter"];
+LINE_COMMENT->  NO_COMMENT [label="/n"];
+LINE_COMMENT->  LINE_COMMENT [label="Otro caracter"];
+COMMENT ->POSSIBLE_END_OF_COMMENT[label="*"];
+COMMENT ->COMMENT[label="Otro caracter"];
+POSSIBLE_END_OF_COMMENT ->NO_COMMENT [label="/"];
+POSSIBLE_END_OF_COMMENT ->COMMENT [label="Otro caracter"];
+} 

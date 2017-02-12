@@ -10,6 +10,8 @@
 #include "Stack.h"
 #include <stdio.h>
 
+#define MAX_STACK 1024
+
 struct {
     int top;
     char character[MAX_STACK];

@@ -12,8 +12,6 @@
 
 #include <stdio.h>
 
-#define MAX_STACK 1024
-
 char pop(void);
 int push(char);
 void fin_del_programa_por_mal_cierre(void);
